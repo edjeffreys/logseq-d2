@@ -5,6 +5,9 @@ on:
     tags:
       - "*"
 
+permissions:
+  contents: write
+
 env:
   PLUGIN_NAME: d2-renderer
 
