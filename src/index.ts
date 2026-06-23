@@ -5,6 +5,24 @@ let d2Instance: D2 | null = null;
 let d2RecreatePromise: Promise<D2> | null = null;
 let renderQueue: Promise<void> = Promise.resolve();
 
+const themeMap: Record<string, number> = {
+  "Default": 0,
+  "Neutral Grey": 1,
+  "Flagship Terrastruct": 3,
+  "Cool Classics": 4,
+  "Mixed Berry Blue": 5,
+  "Grape Soda": 6,
+  "Aubergine": 7,
+  "Color Blind Clear": 8,
+  "Terminal": 100,
+  "Terminal Grayscale": 101,
+  "Origami": 102,
+  "Dark Mauve": 103,
+  "Dark Mauve (Dark)": 200,
+  "Terminal (Dark)": 201,
+  "Dark Flagship Terrastruct": 300,
+};
+
 const settingsSchema: Array<{
   key: string;
   type: string;
@@ -29,17 +47,12 @@ const settingsSchema: Array<{
     default: "false",
   },
   {
-    key: "themeID",
+    key: "theme",
     type: "enum",
     title: "Theme",
-    description:
-      "Theme for rendered diagrams. 0 = default, 1 = Neutral Grey, 3 = Flagship Terrastruct, 4 = Cool Classics, 5 = Mixed Berry Blue, 6 = Grape Soda, 7 = Aubergine, 8 = Color Blind Clear, 100 = Terminal, 101 = Terminal Grayscale, 102 = Origami, 103 = Dark Mauve, 200 = Dark Mauve (Dark), 201 = Terminal (Dark), 300 = Dark Flagship Terrastruct",
-    default: "0",
-    enumChoices: [
-      "0", "1", "3", "4", "5", "6", "7", "8",
-      "100", "101", "102", "103",
-      "200", "201", "300",
-    ],
+    description: "Theme for rendered diagrams.",
+    default: "Default",
+    enumChoices: Object.keys(themeMap),
   },
 ];
 
@@ -54,8 +67,8 @@ function getSketch(): boolean {
 }
 
 function getThemeID(): number {
-  const num = parseInt(String(logseq.settings?.themeID ?? "0"), 10);
-  return isNaN(num) ? 0 : num;
+  const name = (logseq.settings?.theme as string) || "Default";
+  return themeMap[name] ?? 0;
 }
 
 function getD2(): D2 {
