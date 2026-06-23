@@ -1,0 +1,23 @@
+{
+  "name": "logseq-d2",
+  "version": "0.2.0",
+  "description": "Render D2 diagrams inside Logseq using client-side WASM",
+  "main": "dist/index.js",
+  "logseq": {
+    "id": "logseq-d2",
+    "title": "D2 Diagrams",
+    "icon": "./icon.svg"
+  },
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis",
+    "watch": "esbuild src/index.ts --bundle --outfile=dist/index.js --format=iife --target=es2020 --define:global=globalThis --watch"
+  },
+  "dependencies": {
+    "@terrastruct/d2": "^0.1.33"
+  },
+  "devDependencies": {
+    "@logseq/libs": "^0.0.17",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.0"
+  }
+}
