@@ -138,7 +138,6 @@ async function main() {
   const React = logseq.Experiments.React as any;
 
   logseq.Experiments.registerFencedCodeRenderer("d2", {
-    edit: true,
     render: (props) => {
       // Logseq may pass content in different shapes depending on
       // edit mode, plugin reload, etc. Extract defensively.
@@ -176,7 +175,6 @@ async function main() {
           .then((svg) => {
             if (cancelled || !el) return;
             el.innerHTML = svg;
-
           })
           .catch((err: any) => {
             if (cancelled || !el) return;
