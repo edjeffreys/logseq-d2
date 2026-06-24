@@ -2,7 +2,7 @@
   "name": "logseq-d2",
   "version": "0.2.0",
   "description": "Render D2 diagrams inside Logseq using client-side WASM",
-  "main": "dist/index.js",
+  "main": "index.html",
   "logseq": {
     "id": "logseq-d2",
     "title": "D2 Diagrams",
