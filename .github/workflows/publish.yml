@@ -52,6 +52,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          tag: ${{ steps.build.outputs.tag_name }}
           allowUpdates: true
           draft: false
           prerelease: false
