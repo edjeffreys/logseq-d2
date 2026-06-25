@@ -106,11 +106,15 @@ function renderD2(source: string): Promise<string> {
     };
 
     const attempt = async (d2: D2): Promise<string> => {
-      const result = await d2.compile(source, { layout: getLayout() });
-      const svg = await d2.render(result.diagram, {
-        ...result.renderOptions,
-        ...renderOpts,
+      const result = await d2.compile(source, {
+        layout: getLayout(),
+        sketch: renderOpts.sketch,
+        themeID: renderOpts.themeID,
+        pad: renderOpts.pad,
+        scale: renderOpts.scale,
+        noXMLTag: renderOpts.noXMLTag,
       });
+      const svg = await d2.render(result.diagram, result.renderOptions);
       if (typeof svg === "string") return svg;
       throw new Error("render returned non-string");
     };
