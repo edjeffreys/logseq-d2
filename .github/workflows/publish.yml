@@ -4,6 +4,11 @@ on:
   push:
     tags:
       - "*"
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -17,10 +22,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20.x"
+
       - name: Build
         id: build
         run: |
@@ -31,7 +40,11 @@ jobs:
           cp index.html ${{ env.PLUGIN_NAME }}
           mv dist ${{ env.PLUGIN_NAME }}
           zip -r ${{ env.PLUGIN_NAME }}.zip ${{ env.PLUGIN_NAME }}
-          echo "tag_name=$(git tag --sort version:refname | tail -n 1)" >> $GITHUB_OUTPUT
+          TAG="${{ inputs.tag }}"
+          if [ -z "$TAG" ]; then
+            TAG=$(git tag --sort version:refname | tail -n 1)
+          fi
+          echo "tag_name=$TAG" >> $GITHUB_OUTPUT
 
       - name: Create Release
         uses: ncipollo/release-action@v1
