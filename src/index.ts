@@ -5,6 +5,7 @@ let d2Instance: D2 | null = null;
 let d2RecreatePromise: Promise<D2> | null = null;
 let renderQueue: Promise<void> = Promise.resolve();
 
+// IDs must match d2themescatalog (d2themes/d2themescatalog/catalog.go).
 const themeMap: Record<string, number> = {
   "Default": 0,
   "Neutral Grey": 1,
@@ -13,14 +14,19 @@ const themeMap: Record<string, number> = {
   "Mixed Berry Blue": 5,
   "Grape Soda": 6,
   "Aubergine": 7,
-  "Color Blind Clear": 8,
-  "Terminal": 100,
-  "Terminal Grayscale": 101,
-  "Origami": 102,
-  "Dark Mauve": 103,
-  "Dark Mauve (Dark)": 200,
-  "Terminal (Dark)": 201,
-  "Dark Flagship Terrastruct": 300,
+  "Colorblind Clear": 8,
+  "Vanilla Nitro Cola": 100,
+  "Orange Creamsicle": 101,
+  "Shirley Temple": 102,
+  "Earth Tones": 103,
+  "Everglade Green": 104,
+  "Buttered Toast": 105,
+  "Terminal": 300,
+  "Terminal Grayscale": 301,
+  "Origami": 302,
+  "C4": 303,
+  "Dark Mauve": 200,
+  "Dark Flagship Terrastruct": 201,
 };
 
 const settingsSchema: Array<{
@@ -31,30 +37,30 @@ const settingsSchema: Array<{
   default: string;
   enumChoices?: string[];
 }> = [
-  {
-    key: "layoutEngine",
-    type: "enum",
-    title: "Layout Engine",
-    description: "D2 layout engine. Dagre and ELK are available.",
-    default: "dagre",
-    enumChoices: ["dagre", "elk"],
-  },
-  {
-    key: "sketch",
-    type: "boolean",
-    title: "Sketch Mode",
-    description: "Enable hand-drawn sketch style for diagrams.",
-    default: "false",
-  },
-  {
-    key: "theme",
-    type: "enum",
-    title: "Theme",
-    description: "Theme for rendered diagrams.",
-    default: "Default",
-    enumChoices: Object.keys(themeMap),
-  },
-];
+    {
+      key: "layoutEngine",
+      type: "enum",
+      title: "Layout Engine",
+      description: "D2 layout engine. Dagre and ELK are available.",
+      default: "dagre",
+      enumChoices: ["dagre", "elk"],
+    },
+    {
+      key: "sketch",
+      type: "boolean",
+      title: "Sketch Mode",
+      description: "Enable hand-drawn sketch style for diagrams.",
+      default: "false",
+    },
+    {
+      key: "theme",
+      type: "enum",
+      title: "Theme",
+      description: "Theme for rendered diagrams.",
+      default: "Default",
+      enumChoices: Object.keys(themeMap),
+    },
+  ];
 
 function getLayout(): "dagre" | "elk" {
   const layout = (logseq.settings?.layoutEngine as string) || "dagre";
@@ -128,7 +134,7 @@ function renderD2(source: string): Promise<string> {
   });
 
   // Keep queue moving even if this job fails.
-  renderQueue = job.then(() => {}, () => {});
+  renderQueue = job.then(() => { }, () => { });
   return job;
 }
 
